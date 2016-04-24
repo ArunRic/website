@@ -1,0 +1,75 @@
+<title>Upload</title>
+<h4>User preference</h4>
+
+<form action="show.php" method="POST" >
+	Show
+    <input type="hidden" value="<?= $u_id->id ?>" name="id">
+    <input type="hidden" value="show" name="pref">
+    <input type="submit" />
+</form>
+<form action="hide.php" method="POST" >
+	Hide
+    <input type="hidden" value="<?= $row->id ?>" name="id">
+    <input type="hidden" value="hide" name="pref">
+    <input type="submit" />
+</form>
+
+
+<h4>Your Files</h4>
+<form action="uploadfile.php" method="POST" enctype="multipart/form-data">
+    <label>File: </label><input type="file" name="file" />
+    <input type="submit" />
+</form>
+
+<?php 
+include('storecon.php');
+$u_id = $_SESSION['user_id']; 
+echo $u_id;
+if(isset($_GET['id']))
+{
+	$id = $_GET['id'];
+	mysql_query("DELETE FROM filestore WHERE id = '$id'");
+}
+
+$prefquery = mysql_query("SELECT user_pref FROM users WHERE user_id = '$u_id'");
+$row = mysql_fetch_row($prefquery);
+?>
+
+
+<table>
+<thead>
+	<tr>
+		<th>ID</th>
+		<th>File Name</th>
+		<th>File</th>
+		<th>Action</th>
+	</tr>
+</thead>
+ <tbody>
+ 		<?php
+ 			$sql = mysql_query("SELECT * FROM filestore WHERE u_id = '$u_id'");
+ 			while($row = mysql_fetch_object($sql))
+ 			{
+ 				?>
+ 					<tr>
+ 						<td><?= $row->id?></td>
+ 						<td><?= $row->file_name ?></td>
+ 						<td><img width="150" height="150" src="data:file/jpg;base64,<?php echo base64_encode($row->file) ?>" /></td>
+ 						<td><a href="index.php?id=<?= $row->id ?>">Delete</a>&nbsp;| &nbsp;<a href="edit.php?rowid=<?= $row->id ?>">Edit</a> | 
+ 							<a href="download.php?id=<?= $row->id ?>">Download</a> | <a href="shared.php?rowid=<?= $row->id ?>">Share</a>
+ 						| <a href="rename.php?rowid=<?= $row->id ?>">Rename</a></td>
+ 					</tr>
+ 				<?php 
+ 			}
+ 		?>
+ </tbody>
+</table>
+
+<?php
+$prefquery = mysql_query("SELECT user_pref FROM users WHERE user_id = '$u_id'");
+$row = mysql_fetch_row($prefquery);
+ if ($row[0] == 0){
+	include ('sharedwith.php');
+} ?>
+
+

@@ -1,0 +1,18 @@
+<!-- php has to be at the top or preview image wont show -->
+<?php 
+include_once('storecon.php');
+if(isset($_GET['rowid']))
+{
+	$id = $_GET['rowid'];
+	$row = mysql_fetch_object(mysql_query("SELECT * FROM filestore WHERE id = '$id'"));
+}
+?>
+<h5>You are editing</h5>
+<form action="updatefile.php" method="POST" enctype="multipart/form-data">
+    <input type="hidden" value="<?= $row->id ?>" name="id">
+    <label>File: </label><input type="file" name="file" />
+    <img width="50" height="50" src="data:file/jpg;base64,<?php echo base64_encode($row->file) ?>" />
+    <input type="submit" />
+</form>
+<a href="index.php">Back to all files</a>
+<!--// this is in the edit page the width and height is how big the image is "preview" -->

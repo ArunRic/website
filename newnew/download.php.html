@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <title>Download File From MySQL</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    </head>
+<body>
+<?php
+       
+        include_once 'storecon.php';
+        if (isset($_GET['id'])) 
+               {
+                     $id = $_GET['id'];
+                     $query = "SELECT * " .
+                             "FROM filestore WHERE id = '$id'";
+                     $result = mysqli_query($connection,$query) or die('Error, query failed');
+                     list($id, $file, $content, $uid, $size, $type, $test) = mysqli_fetch_array($result);
+                                   echo $id . $file . $type . $size;
+                                   //$content = addslashes($content);
+                                   //echo 'sampath';
+                     header("Content-length: ".strlen($size));
+                     header("Content-type: $type");
+                     header("Content-Disposition: attachment; filename= $file");
+                     header("Content-Description: PHP Generated Data");
+                     header("Content-transfer-encoding: binary");
+                     ob_end_clean();
+                     flush();
+                     echo $content;
+                     mysqli_close($connection);
+                     exit;
+               }
+           ?>
+</body>
+
+</html>

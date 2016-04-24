@@ -59,7 +59,7 @@ header {
     margin:0 auto 10px auto;
 }
 #container {
-    min-height:400px;
+    min-height:1000px;
     border-radius:5px 5px 0 0;
 }
 footer {
@@ -99,7 +99,7 @@ nav ul li a.last {
 }
 /* Aside */
 aside {
-    width:260px;
+    width:430px;
     float:right;
     border-left:1px dashed #aaa;
     padding-left:15px;

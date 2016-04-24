@@ -7,5 +7,10 @@
                     		</li>
                     </ul>
 
+                    <?php
+include('storage.php');
+
+?>
                 </div>
             </div>
+
